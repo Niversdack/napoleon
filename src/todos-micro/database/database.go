@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/gommon/log"
 	_ "github.com/lib/pq"
-	"napoleon/src/auth-micro/models"
+	"napoleon/src/todos-micro/models"
 )
 
 var DB *gorm.DB
@@ -36,7 +36,7 @@ func Initialize() *gorm.DB {
 // Migrate all needed tables
 func Migrate() {
 
-	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Todo{})
 
 	log.Info("Table was successfully created")
 

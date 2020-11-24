@@ -2,12 +2,10 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"napoleon/src/auth-micro/configs"
 	"napoleon/src/auth-micro/database"
 	"napoleon/src/auth-micro/models"
 	"napoleon/src/auth-micro/utils"
 	"net/http"
-	"time"
 )
 
 func Auth(c *gin.Context) {
@@ -22,7 +20,9 @@ func Auth(c *gin.Context) {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
-	accesstoken := utils.GenerateJWT(configs.GlobalConfig.SecretKey, 99999*time.Hour, data.Username)
+
+	accesstoken := utils.GenerateJWT("napoleonJwT24", user.Username, user.ID)
+
 	c.JSON(201, gin.H{"token": accesstoken})
 	return
 }

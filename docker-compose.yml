@@ -33,13 +33,10 @@ services:
 
   auth-micro:
     networks:
-
       - data-net
     depends_on:
-
       - db
     links:
-      - redis
       - db
     ports:
       - '8080:8080'
@@ -47,14 +44,24 @@ services:
 
     privileged: true
 
+  todos-micro:
+    networks:
+      - data-net
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - '8090:8080'
+    build: src/todos-micro
+
+    privileged: true
+
 volumes:
-  image-micro:
   database_postgres:
-  redis-data:
   pgadmin:
 
 
 
 networks:
   data-net:
-  redis-net:

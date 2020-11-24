@@ -10,26 +10,6 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GenerateJWT(secretKey string, username string, id uint) string {
-	var jwtKey = []byte(secretKey)
-
-	claims := &Claims{
-		Username:       username,
-		ID:             id,
-		StandardClaims: jwt.StandardClaims{},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	tokenString, err := token.SignedString(jwtKey)
-
-	if err != nil {
-		return ""
-	}
-
-	return tokenString
-
-}
 func CheckJwtValid(secretKey string, accessToken string) bool {
 	var jwtKey = []byte(secretKey)
 

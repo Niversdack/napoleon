@@ -2,8 +2,8 @@
 FROM golang:alpine as builder
 
 
-ADD . /go/src/napoleon/src/auth-micro
-WORKDIR /go/src/napoleon/src/auth-micro
+ADD . /go/src/napoleon/src/todos-micro
+WORKDIR /go/src/napoleon/src/todos-micro
 RUN go mod download
 
 COPY . ./
@@ -11,14 +11,14 @@ COPY . ./
 RUN apk update && apk add --no-cache git
 
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /auth-micro .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /todos-micro .
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
-COPY --from=builder /auth-micro ./auth-micro
+COPY --from=builder /todos-micro ./todos-micro
 
 
 EXPOSE 8080
 
-ENTRYPOINT ["./auth-micro"]
+ENTRYPOINT ["./todos-micro"]

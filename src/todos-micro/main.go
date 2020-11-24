@@ -4,10 +4,10 @@ import (
 	"flag"
 	"github.com/gin-gonic/gin"
 	"log"
-	"napoleon/src/auth-micro/controllers"
-	"napoleon/src/auth-micro/database"
-	"napoleon/src/auth-micro/models"
-	"napoleon/src/auth-micro/utils"
+	"napoleon/src/todos-micro/controllers"
+	"napoleon/src/todos-micro/database"
+	"napoleon/src/todos-micro/models"
+	"napoleon/src/todos-micro/utils"
 	"strings"
 )
 
@@ -26,9 +26,15 @@ func main() {
 	defer db.Close()
 
 	r := gin.Default()
-	r.POST("/reg", controllers.Reg)
-	r.POST("/auth", controllers.Auth)
-	r.POST("/user", controllers.Get).Use(AuthMiddleware())
+	r.POST("/create", controllers.Create)
+	r.POST("/delete", controllers.Delete)
+	r.POST("/update", controllers.Update)
+	r.POST("/getall", controllers.GetAll)
+	r.POST("/getbyid", controllers.GetByID)
+	r.POST("/getbytime", controllers.GetByTime)
+
+	r.Use(AuthMiddleware())
+
 	err := r.Run(":8080")
 	if err != nil {
 		log.Fatal(err)
