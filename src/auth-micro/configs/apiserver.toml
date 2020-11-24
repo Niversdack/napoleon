@@ -1,0 +1,2 @@
+databaseUrl = "host=localhost dbname=postgres sslmode=disable password=H6bLerShrQ user=postgres"
+secretKey = "napoleonJwT24"
