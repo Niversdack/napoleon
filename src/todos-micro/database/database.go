@@ -16,7 +16,7 @@ var DB *gorm.DB
 
 func Initialize() *gorm.DB {
 
-	db, err := gorm.Open("postgres", "host=localhost dbname=postgres sslmode=disable password=H6bLerShrQ user=postgres")
+	db, err := gorm.Open("postgres", "host=db dbname=postgres sslmode=disable password=H6bLerShrQ user=postgres")
 
 	if err != nil {
 		log.Fatal(err)

@@ -8,6 +8,15 @@ import (
 	"net/http"
 )
 
+// Auth godoc
+// @Summary Auth
+// @Description Auth Username, Password
+// @Accept  json
+// @Produce  json
+// @Param user body RegRequest true "201 token"
+// @Security ApiKeyAuth
+// @Success 201
+// @Router /auth [post]
 func Auth(c *gin.Context) {
 	var data RegRequest
 

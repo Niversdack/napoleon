@@ -1,39 +1,43 @@
 package main
 
 import (
-	"flag"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"napoleon/src/todos-micro/controllers"
 	"napoleon/src/todos-micro/database"
+	"napoleon/src/todos-micro/docs"
 	"napoleon/src/todos-micro/models"
 	"napoleon/src/todos-micro/utils"
-	"strings"
 )
 
-var (
-	configPath string
-)
-
-func init() {
-	flag.StringVar(&configPath, "config-path", "configs/apiserver.toml", "path to config file")
-}
+//@securityDefinitions.apikey ApiKeyAuth
+//@in header
+//@name Authorization
 func main() {
-	flag.Parse()
+
+	docs.SwaggerInfo.Title = "Napoleon Test API"
+
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	db := database.Initialize()
 	database.Migrate()
 	defer db.Close()
 
 	r := gin.Default()
-	r.POST("/create", controllers.Create)
-	r.POST("/delete", controllers.Delete)
-	r.POST("/update", controllers.Update)
-	r.POST("/getall", controllers.GetAll)
-	r.POST("/getbyid", controllers.GetByID)
-	r.POST("/getbytime", controllers.GetByTime)
-
-	r.Use(AuthMiddleware())
+	r.Use(gin.Recovery())
+	auth := r.Group("/")
+	auth.Use(AuthMiddleware())
+	{
+		auth.POST("/create", controllers.Create)
+		auth.POST("/delete", controllers.Delete)
+		auth.POST("/update", controllers.Update)
+		auth.POST("/getall", controllers.GetAll)
+		auth.POST("/getbyid", controllers.GetByID)
+		auth.POST("/getbytime", controllers.GetByTime)
+	}
+	r.GET("/swagger/todos-micro/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	err := r.Run(":8080")
 	if err != nil {
@@ -42,7 +46,7 @@ func main() {
 }
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := strings.Split(c.Request.Header["Authorization"][0], " ")[1]
+		token := c.Request.Header["Authorization"][0]
 		claims := utils.GetClaims("napoleonJwT24", token)
 
 		var user models.User

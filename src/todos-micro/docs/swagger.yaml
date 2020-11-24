@@ -1,0 +1,172 @@
+definitions:
+  controllers.CreateRequest:
+    properties:
+      description:
+        type: string
+      end_time:
+        type: integer
+      name:
+        type: string
+    required:
+    - description
+    - end_time
+    - name
+    type: object
+  controllers.DelRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  controllers.GetByIDRequest:
+    properties:
+      id:
+        type: integer
+    type: object
+  controllers.GetByTimeRequest:
+    properties:
+      time:
+        type: integer
+    type: object
+  models.Todo:
+    properties:
+      description:
+        type: string
+      endTime:
+        type: string
+      name:
+        type: string
+      userID:
+        type: integer
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /create:
+    post:
+      consumes:
+      - application/json
+      description: Create todo Name, Description, EndTime
+      parameters:
+      - description: '{object} models.Todo'
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201": {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+  /delete:
+    post:
+      consumes:
+      - application/json
+      description: Delete by ID
+      parameters:
+      - description: Code 201
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.DelRequest'
+      produces:
+      - application/json
+      responses:
+        "201": {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+  /getall:
+    post:
+      consumes:
+      - application/json
+      description: Get by Time
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/models.Todo'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: GetAll
+  /getbyid:
+    post:
+      consumes:
+      - application/json
+      description: Get by ID
+      parameters:
+      - description: '{object} models.Todo'
+        in: body
+        name: todos
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.GetByIDRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Todo'
+      security:
+      - ApiKeyAuth: []
+      summary: GetByID
+  /getbytime:
+    post:
+      consumes:
+      - application/json
+      description: Get by Time
+      parameters:
+      - description: '{array} models.Todo'
+        in: body
+        name: todos
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.GetByTimeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/models.Todo'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: GetByTime
+  /update:
+    post:
+      consumes:
+      - application/json
+      description: Update todo Name, Description, EndTime
+      parameters:
+      - description: Code 201
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201": {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

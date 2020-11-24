@@ -1,0 +1,95 @@
+definitions:
+  controllers.RegRequest:
+    properties:
+      password:
+        example: DomPushkina
+        type: string
+      username:
+        example: PetrovVasya
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  controllers.RequestUser:
+    properties:
+      id:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /auth:
+    post:
+      consumes:
+      - application/json
+      description: Auth Username, Password
+      parameters:
+      - description: 201 token
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RegRequest'
+      produces:
+      - application/json
+      responses:
+        "201": {}
+      security:
+      - ApiKeyAuth: []
+      summary: Auth
+  /reg:
+    post:
+      consumes:
+      - application/json
+      description: Reg by Username, Password
+      parameters:
+      - description: code 201
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RegRequest'
+      produces:
+      - application/json
+      responses:
+        "201": {}
+      security:
+      - ApiKeyAuth: []
+      summary: Reg
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Get token return user by id
+      parameters:
+      - description: '{object} models.User'
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.RequestUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Get
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

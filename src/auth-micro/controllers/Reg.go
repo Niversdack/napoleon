@@ -12,6 +12,15 @@ type RegRequest struct {
 	Password string `json:"password" binding:"required" example:"DomPushkina"`
 }
 
+// Reg godoc
+// @Summary Reg
+// @Description Reg by Username, Password
+// @Accept  json
+// @Produce  json
+// @Param user body RegRequest true "code 201"
+// @Security ApiKeyAuth
+// @Success 201
+// @Router /reg [post]
 func Reg(c *gin.Context) {
 	var data RegRequest
 
