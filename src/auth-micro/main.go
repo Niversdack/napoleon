@@ -11,6 +11,7 @@ import (
 
 var (
 	configPath string
+	Config     configs.Config
 )
 
 func init() {
@@ -18,7 +19,7 @@ func init() {
 }
 func main() {
 	flag.Parse()
-	config := configs.NewConfig()
+	Config := configs.NewConfig()
 
 	db := database.Initialize()
 	database.Migrate()
@@ -27,7 +28,7 @@ func main() {
 	r := gin.Default()
 	r.POST("/reg", controllers.Reg)
 	r.POST("/auth", controllers.Auth)
-	err := r.Run(config.BindAddr)
+	err := r.Run(Config.BindAddr)
 	if err != nil {
 		log.Fatal(err)
 	}

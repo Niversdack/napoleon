@@ -8,6 +8,10 @@ type Config struct {
 	GrpcConAddr string `toml:"grpcConnectionAddr"`
 }
 
+var (
+	GlobalConfig *Config
+)
+
 // NewConfig ...
 func NewConfig() *Config {
 	return &Config{
