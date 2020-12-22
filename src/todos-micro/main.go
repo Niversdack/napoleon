@@ -50,7 +50,7 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header["Authorization"][0]
 		claims := utils.GetClaims("napoleonJwT24", token)
-
+		_ = token
 		var user models.User
 		database.DB.Where("username=?", claims.Username).First(&user)
 		if user.ID != claims.ID {
